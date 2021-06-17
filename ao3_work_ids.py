@@ -103,8 +103,15 @@ def get_args():
 # 
 def get_ids(header_info=''):
     global page_empty
-    headers = {'user-agent' : header_info}
-    req = requests.get(url, headers=headers)
+    headers = {'user-agent': header_info}
+    status = 429
+    while 429 == status:
+        req = requests.get(url, headers=headers)
+        status = req.status_code
+        if 429 == status:
+            print("Request answered with Status-Code "+str(status))
+            print("Trying again in 1 minute...")
+            time.sleep(60)
     soup = BeautifulSoup(req.text, "lxml")
 
     # some responsiveness in the "UI"
@@ -189,7 +196,7 @@ def add_tag_to_url(tag):
 # 
 def write_ids_to_csv(ids):
     global num_recorded_fic
-    with open(csv_name + ".csv", 'a') as csvfile:
+    with open(csv_name + ".csv", 'a', newline="") as csvfile:
         wr = csv.writer(csvfile, delimiter=',')
         for id in ids:
             if (not_finished()):
@@ -244,7 +251,7 @@ def main():
     header_info = get_args()
     make_readme()
 
-    print ("processing...\n")
+    print("processing...\n")
 
     if (len(tags)):
         for t in tags:
@@ -255,6 +262,6 @@ def main():
     else:
         process_for_ids(header_info)
 
-    print ("That's all, folks.")
+    print("That's all, folks.")
 
 main()
