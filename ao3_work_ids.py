@@ -189,7 +189,7 @@ def add_tag_to_url(tag):
 # 
 def write_ids_to_csv(ids):
     global num_recorded_fic
-    with open(csv_name + ".csv", 'a') as csvfile:
+    with open(csv_name + ".csv", 'a', newline="") as csvfile:
         wr = csv.writer(csvfile, delimiter=',')
         for id in ids:
             if (not_finished()):

@@ -23,8 +23,8 @@
 # --restart is an optional string which when used in combination with a csv input will start
 # the scraping from the given work_id, skipping all previous rows in the csv
 #
-# --bookmarks is an optional flag which collects the users who have bookmarked a fic.  
-# Because this is a slow operation, it is excluded by default. 
+# --bookmarks is an optional flag which collects the users who have bookmarked a fic.
+# Because this is a slow operation, it is excluded by default.
 #
 # Author: Jingyi Li soundtracknoon [at] gmail
 # I wrote this in Python 2.7. 9/23/16
@@ -141,7 +141,7 @@ def get_bookmarks(url, header_info):
 		pages = soup.find('ol', class_='pagination actions').findChildren("li" , recursive=False)
 		max_pages = int(pages[-2].contents[0].contents[0])
 		count = 1
-	
+
 		sys.stdout.write('(' + str(max_pages) + ' pages)')
 		sys.stdout.flush()
 
@@ -254,7 +254,7 @@ def get_args():
 		'--lang', default='', 
 		help='only retrieves fics of certain language (e.g English), make sure you use correct spelling and capitalization or this argument will not work')
 	parser.add_argument(
-		'--bookmarks', action='store_true', 
+		'--bookmarks', action='store_true',
 		help='retrieve bookmarks; ')
 	args = parser.parse_args()
 	fic_ids = args.ids
@@ -287,9 +287,9 @@ def process_id(fic_id, restart, found):
 def main():
 	fic_ids, csv_out, headers, restart, is_csv, only_first_chap, lang, include_bookmarks = get_args()
 	os.chdir(os.getcwd())
-	with open(csv_out, 'a') as f_out:
+	with open(csv_out, 'a', newline="") as f_out:
 		writer = csv.writer(f_out)
-		with open("errors_" + csv_out, 'a') as e_out:
+		with open("errors_" + csv_out, 'a', newline="") as e_out:
 			errorwriter = csv.writer(e_out)
 			#does the csv already exist? if not, let's write a header row.
 			if os.stat(csv_out).st_size == 0:
@@ -298,7 +298,7 @@ def main():
 				writer.writerow(header)
 			if is_csv:
 				csv_fname = fic_ids[0]
-				with open(csv_fname, 'r+') as f_in:
+				with open(csv_fname, 'r+', newline="") as f_in:
 					reader = csv.reader(f_in)
 					if restart is '':
 						for row in reader:
